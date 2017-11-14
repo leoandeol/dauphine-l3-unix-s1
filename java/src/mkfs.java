@@ -292,7 +292,6 @@ public class mkfs
 
     /** On va maintenant créer les dossiers et les fichiers essentiels au fonctionnement du système **/
     mkdir.mkonedir("/etc");
-    mkdir.mkonedir("/etc/test");
   }
 
 }
