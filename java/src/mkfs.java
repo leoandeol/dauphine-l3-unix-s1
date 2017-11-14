@@ -292,6 +292,11 @@ public class mkfs
 
     /** On va maintenant créer les dossiers et les fichiers essentiels au fonctionnement du système **/
     mkdir.mkonedir("/etc");
+    /// TODO reecrire mkonedir dans Kernel ou sinon toutes les fonctions util dans classe util
+      Kernel.initialize();
+      Kernel.createFile("/etc/passwd");
+    Kernel.createFile("/etc/shadow");
+    Kernel.exit(0);
   }
 
 }

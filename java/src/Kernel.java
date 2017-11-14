@@ -1615,5 +1615,16 @@ Some internal methods.
           return count;
       } catch(Exception e){e.printStackTrace();return -1;}
   }
+
+  public static void createFile(String path){
+      try {
+          final short mode = 0700;
+          int fd = Kernel.creat(path, mode);
+          Kernel.write(fd, null, 0);
+          Kernel.close(fd);
+      }catch(Exception e){
+          e.printStackTrace();
+      }
+  }
 }
 
