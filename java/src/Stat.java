@@ -25,7 +25,7 @@ public class Stat
 
   public short st_dev = 0 ;
 
-  public short st_ino = 0 ;
+    public short st_ino = 0 ;
 
   public short st_mode = 0 ;
 

@@ -1602,5 +1602,18 @@ Some internal methods.
     return indexNodeNumber ;
   }
 
+  public static int countLines(int fd){
+      try {
+          byte[] ch = new byte[1];
+          int rd = 0;
+          int count = 0;
+          do {
+              rd = Kernel.read(fd, ch, 1);
+              if(ch[0]==0x0A)
+                  count++;
+          } while (rd > 0);
+          return count;
+      } catch(Exception e){e.printStackTrace();return -1;}
+  }
 }
 

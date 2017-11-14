@@ -275,7 +275,7 @@ public class mkfs
     DirectoryEntry itself = 
       new DirectoryEntry( FileSystem.ROOT_INDEX_NODE_NUMBER , "." ) ;
     DirectoryEntry parent = 
-      new DirectoryEntry( FileSystem.ROOT_INDEX_NODE_NUMBER , ".." ) ;
+      new DirectoryEntry( FileSystem.ROOT_INDEX_NODE_NUMBER , "") ;
 
     // write the root directory entries to the root directory block
     itself.write( rootDirectoryBlock.bytes , 0 ) ;
@@ -289,6 +289,10 @@ public class mkfs
     file.seek( blocks * block_size - 1 ) ;
     file.write( 0 ) ;
     file.close() ;
+
+    /** On va maintenant créer les dossiers et les fichiers essentiels au fonctionnement du système **/
+    mkdir.mkonedir("/etc");
+    mkdir.mkonedir("/etc/test");
   }
 
 }
