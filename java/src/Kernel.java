@@ -191,7 +191,6 @@ public class Kernel
    * <pre>
    *   extern int errno ;
    * </pre>
-   * @see getErrno
    */
   public static void setErrno( int newErrno )
   {
@@ -211,7 +210,6 @@ public class Kernel
    * <pre>
    *   extern int errno ;
    * </pre>
-   * @see setErrno
    */
   public static int getErrno()
   {
@@ -742,6 +740,7 @@ public class Kernel
    * an exception to be thrown
    */
   public static int open( String pathname , int flags )
+
     throws Exception
   {
     // get the full path name
@@ -1615,6 +1614,19 @@ Some internal methods.
           return count;
       } catch(Exception e){e.printStackTrace();return -1;}
   }
+       //search for a specific word
+  public static int searchword(int fd,String s) throws Exception {
+    byte [] word=s.getBytes();
+    byte[] ch = new byte[s.length()];
+    int nl=Kernel.countLines(fd);
+    int rd=0,c=0;
+        do {
+            rd = Kernel.read(fd, ch, s.length());
+            c++;
+        } while (c<nl && word==ch);
+      if(c<nl)return c;
+      return -1;
+  }
 
   public static void createFile(String path){
       try {
@@ -1626,5 +1638,10 @@ Some internal methods.
           e.printStackTrace();
       }
   }
+
 }
+
+
+
+
 

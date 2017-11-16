@@ -19,7 +19,7 @@
  */
 
 /**
- * Reads standard input and writes to standard output 
+ * Reads standard input and writes to standard output
  * and the named file.
  * A simple tee program for a simulated file system.
  * <p>
@@ -32,14 +32,14 @@
 public class tee
 {
   /**
-   * The name of this program.  
-   * This is the program name that is used 
+   * The name of this program.
+   * This is the program name that is used
    * when displaying error messages.
    */
   public static final String PROGRAM_NAME = "tee" ;
 
   /**
-   * The size of the buffer to be used for reading from the 
+   * The size of the buffer to be used for reading from the
    * file.  A buffer of this size is filled before writing
    * to the output file.
    */
@@ -63,8 +63,8 @@ public class tee
     // print a helpful message if the number of arguments is not correct
     if( argv.length != 1 )
     {
-      System.err.println( PROGRAM_NAME + ": usage: java " + PROGRAM_NAME + 
-        " output-file" ) ;
+      System.err.println( PROGRAM_NAME + ": usage: java " + PROGRAM_NAME +
+              " output-file" ) ;
       Kernel.exit( 1 ) ;
     }
 
@@ -77,7 +77,7 @@ public class tee
     {
       Kernel.perror( PROGRAM_NAME ) ;
       System.err.println( PROGRAM_NAME + ": unable to open output file \"" +
-        name + "\"" ) ;
+              name + "\"" ) ;
       Kernel.exit( 2 ) ;
     }
 
@@ -101,7 +101,7 @@ public class tee
       {
         Kernel.perror( PROGRAM_NAME ) ;
         System.err.println( PROGRAM_NAME +
-          ": error during write to output file" ) ;
+                ": error during write to output file" ) ;
         Kernel.exit( 3 ) ;
       }
 
