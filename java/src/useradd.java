@@ -44,9 +44,10 @@ public class useradd {
 
         // on se positionne à la fin du fichier /etc/password
         Kernel.lseek(out_fd, 0, 2);
-        int nb_lignes = Kernel.countLines(out_fd);
-        //on prépare la ligne qui correspond au nouvel utilisateur SANS GROUPE TODO
-        String newline = name + ":" + "x:" + nb_lignes + "::" + name + ":" + (name.equals("root") ? "/root" : "/home/" + name) + "/bin/bash";
+        int nb_lignes = File.countLines(out_fd);
+        ///TODO groupe
+        String newline = name + ":" + "x:" + nb_lignes + "::" + name + ":" + (name.equals("root") ? "/root" : "/home/" + name) + "/bin/bash\n";
+        //TODO ajouter pass vide
         // on ajoute cette ligne
         int wr_count = Kernel.write(out_fd, newline.getBytes(), newline.getBytes().length);
         if (wr_count <= 0) {
@@ -54,6 +55,7 @@ public class useradd {
             System.err.println(PROGRAM_NAME +
                     ": error during write to output file");
             Kernel.exit(3);
+
         }
 
         // close the output file

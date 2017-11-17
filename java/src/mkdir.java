@@ -126,10 +126,4 @@ public class mkdir {
         Kernel.exit(0);
     }
 
-    public static void mkonedir(String s){
-        String[] tmp = new String[1];
-        tmp[0] = s;
-        try {mkdir.main(tmp);}catch(Exception e){e.printStackTrace();}
-    }
-
 }
