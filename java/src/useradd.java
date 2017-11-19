@@ -34,32 +34,22 @@ public class useradd {
         // give the command line argument a better name
         String name = argv[0];
 
-        // create the output file
-        int out_fd = Kernel.open("/etc/passwd", OUTPUT_MODE);
-        if (out_fd < 0) {
-            Kernel.perror(PROGRAM_NAME);
-            System.err.println(PROGRAM_NAME + ": unable to open output file /etc/passwd");
-            Kernel.exit(2);
-        }
+        String[][] data = File.readSystemFile(File.SystemFile.PASSWD);
+        ///TODO creer groupe
+        //String newline = name + ":" + "x:" + nb_lignes + "::" + name + ":" + (name.equals("root") ? "/root" : "/home/" + name) + "/bin/bash\n";
+        //TODO ajouter pass vide Date.from(Instant.now()).toString()
+        ///TODO meilleur generateur d'ID
+        String[] newline = new String[7];
+        newline[0] = name;
+        newline[1] = "x";
+        newline[2] = String.valueOf(data.length);
+        newline[3] = String.valueOf(data.length);
+        newline[4] = name;
+        newline[5] = (name.equals("root") ? "/root" : "/home/" + name);
+        newline[6] = "/bin/bash";
+        ///TODO creer dossier utilisateur
 
-        // on se positionne à la fin du fichier /etc/password
-        Kernel.lseek(out_fd, 0, 2);
-        int nb_lignes = File.countLines(out_fd);
-        ///TODO groupe
-        String newline = name + ":" + "x:" + nb_lignes + "::" + name + ":" + (name.equals("root") ? "/root" : "/home/" + name) + "/bin/bash\n";
-        //TODO ajouter pass vide
-        // on ajoute cette ligne
-        int wr_count = Kernel.write(out_fd, newline.getBytes(), newline.getBytes().length);
-        if (wr_count <= 0) {
-            Kernel.perror(PROGRAM_NAME);
-            System.err.println(PROGRAM_NAME +
-                    ": error during write to output file");
-            Kernel.exit(3);
-
-        }
-
-        // close the output file
-        Kernel.close(out_fd);
+        String[][] newData = File.inflateArray(data, newline);
 
         // exit with success
         Kernel.exit(0);

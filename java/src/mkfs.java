@@ -3,6 +3,7 @@
  */
 
 import java.io.*;
+import java.io.File;
 
 /*
  * $Log: mkfs.java,v $
