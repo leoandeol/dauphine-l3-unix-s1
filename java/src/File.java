@@ -74,15 +74,17 @@ public class File {
         stringToFile(f.toString(), res);
     }
 
-    public static int countLines(int fd) throws Exception {
+    public static int countLines(SystemFile file) throws Exception {
+        int fd= Kernel.open(file.toString(), Kernel.O_RDONLY);
         byte[] ch = new byte[1];
-        int rd = 0;
-        int count = 0;
+        int rd;
+        int count = 1;
         do {
             rd = Kernel.read(fd, ch, 1);
             if (ch[0] == 0x0A)
                 count++;
         } while (rd > 0);
+        Kernel.close(fd);
         return count;
     }
 
@@ -108,5 +110,43 @@ public class File {
         //TODO cloner l'element second
         result[result.length-1] = second;
         return result;
+    }
+
+    public static boolean checkUserExist(String user) throws Exception {
+        String[][] s = File.readSystemFile(SystemFile.PASSWD);
+        for(String[] v : s){
+            if(v[0].equals(user))
+                return true;
+        }
+        return false;
+    }
+
+    public static void createFolder(String path) throws Exception{
+        Runtime.getRuntime().exec("java mkdir "+path).waitFor();
+    }
+
+    public static void createFile(String path) throws Exception{
+        Process a = Runtime.getRuntime().exec("java tee "+path);
+        a.getOutputStream().close();
+        a.getInputStream().close();
+        a.waitFor();
+    }
+
+    public static String[] getLineNamed(SystemFile file, String name) throws Exception{
+        String[][] s = File.readSystemFile(file);
+        for(String[] a : s){
+            if(a[0].equals(name))
+                return a;
+        }
+        return null;
+    }
+
+    public static int getLineNamedId(SystemFile file, String name) throws Exception{
+        String[][] s = File.readSystemFile(file);
+        for(int i = 0; i < s.length; i++){
+            if(s[i][0].equals(name))
+                return i;
+        }
+        return -1;
     }
 }

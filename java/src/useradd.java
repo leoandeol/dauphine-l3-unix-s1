@@ -1,3 +1,5 @@
+import java.time.Instant;
+import java.util.Date;
 
 public class useradd {
     public static final String PROGRAM_NAME = "useradd";
@@ -33,26 +35,39 @@ public class useradd {
 
         // give the command line argument a better name
         String name = argv[0];
+        if(File.checkUserExist(name)){
+            System.err.println(PROGRAM_NAME + ": user \""+name+"\" already exists");
+            Kernel.exit(-1);
+        }
 
-        String[][] data = File.readSystemFile(File.SystemFile.PASSWD);
-        ///TODO creer groupe
-        //String newline = name + ":" + "x:" + nb_lignes + "::" + name + ":" + (name.equals("root") ? "/root" : "/home/" + name) + "/bin/bash\n";
-        //TODO ajouter pass vide Date.from(Instant.now()).toString()
-        ///TODO meilleur generateur d'ID
-        String[] newline = new String[7];
-        newline[0] = name;
-        newline[1] = "x";
-        newline[2] = String.valueOf(data.length);
-        newline[3] = String.valueOf(data.length);
-        newline[4] = name;
-        newline[5] = (name.equals("root") ? "/root" : "/home/" + name);
-        newline[6] = "/bin/bash";
-        ///TODO creer dossier utilisateur
+        // /etc/group entry
+        String[][] groupdata = File.readSystemFile(File.SystemFile.GROUP);
+        String gid = String.valueOf(groupdata.length);
+        String[] newgroupline = {name,"",gid,name};
+        String[][] newgroupdata = File.inflateArray(groupdata, newgroupline);
+        File.writeSystemFile(File.SystemFile.GROUP, newgroupdata);
 
-        String[][] newData = File.inflateArray(data, newline);
+        // /etc/passwd entry
+        String[][] passwddata = File.readSystemFile(File.SystemFile.PASSWD);
+        String uid = String.valueOf(passwddata.length);
+        String home = (name.equals("root") ? "/root" : "/home/" + name);
+
+        String[] newpasswdline = {name,"x",uid,gid,name,home,"/bin/bash"};
+        String[][] newpasswdata = File.inflateArray(passwddata, newpasswdline);
+        File.writeSystemFile(File.SystemFile.PASSWD, newpasswdata);
+
+        //new user folder
+        File.createFolder(home);
+
+        // /etc/shadow entry
+        String[][] shadowdata = File.readSystemFile(File.SystemFile.SHADOW);
+        String[] newshadowline = {name, "password", Date.from(Instant.now()).toString(),"0","99999"};
+        String[][] newshadowdata = File.inflateArray(shadowdata, newshadowline);
+        File.writeSystemFile(File.SystemFile.SHADOW, newshadowdata);
+
+        System.out.println("User \""+name+"\" created with default password as : \"password\"");
 
         // exit with success
         Kernel.exit(0);
     }
-
 }

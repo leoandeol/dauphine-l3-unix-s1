@@ -8,22 +8,11 @@ public class genproj {
         final String[] files = {"/etc/passwd","/etc/shadow","/etc/group", "/bin/bash"};
 
         for(String folder : folders){
-            createFolder(folder);
+            File.createFolder(folder);
         }
         for(String file : files){
-            createFile(file);
+            File.createFile(file);
         }
-    }
-
-    public static void createFolder(String path) throws Exception{
-        Runtime.getRuntime().exec("java mkdir "+path).waitFor();
-    }
-
-    public static void createFile(String path) throws Exception{
-        Process a = Runtime.getRuntime().exec("java tee "+path);
-        a.getOutputStream().close();
-        a.getInputStream().close();
-        a.waitFor();
     }
 
 }
