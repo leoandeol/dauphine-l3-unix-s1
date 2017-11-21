@@ -1,77 +1,67 @@
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Scanner;
 
-public class gpasswd
-{
-  /**
-   * The name of this program.  
-   * This is the program name that is used 
-   * when displaying error messages.
-   */
-  public static final String PROGRAM_NAME = "gpasswd" ;
+public class gpasswd {
+    /**
+     * The name of this program.
+     * This is the program name that is used
+     * when displaying error messages.
+     */
+    public static final String PROGRAM_NAME = "gpasswd";
+    /**
+     * Reads files and writes to standard output.
+     *
+     * @throws java.lang.Exception if an exception is thrown
+     *                             by an underlying operation
+     */
+    public static void main(String[] argv) throws Exception {
+        // initialize the file system simulator kernel
+        Kernel.initialize();
 
-  /**
-   * The size of the buffer to be used for reading from the 
-   * file.  A buffer of this size is filled before writing
-   * to the output file.
-   */
-  public static final int BUF_SIZE = 4096 ;
+        // display a helpful message if no arguments are given
+        if (argv.length == 0) {
+            System.err.println(PROGRAM_NAME + ": usage: java " + PROGRAM_NAME +
+                    " username");
+            Kernel.exit(1);
+        }
+        // give the command line argument a better name
+        String name = argv[0];
 
-  /**
-   * Reads files and writes to standard output.
-   * @exception java.lang.Exception if an exception is thrown
-   * by an underlying operation
-   */
-  public static void main( String[] argv ) throws Exception
-  {
-    // initialize the file system simulator kernel
-    Kernel.initialize() ;
-/*
-    // display a helpful message if no arguments are given
-    if( argv.length == 0 )
-    {
-      System.err.println( PROGRAM_NAME + ": usage: java " + PROGRAM_NAME + 
-        " input-file ..." ) ;
-      Kernel.exit( 1 ) ;
-    }
-    // give the command line argument a better name
-      String group = argv[0] ;
-
-      //read the file 
-      String[][] data = File.readSystemFile(File.SystemFile.GROUP);
-      String opw="";
-      String exist=checkUserExist(group);
-      if(!exist) System.out.println("this group doesn't exist ");
-      else {
-        //ask user for his old password 
+        //read the file
+        String[][] data = File.readSystemFile(File.SystemFile.GROUP);
+        if (!File.checkGroupExist(name)) {
+            System.out.println("this group doesn't exist ");
+            Kernel.exit(-1);
+        }
+        //ask user for his old password
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter the old  password  :");
-        opw = sc.nextLine();
+        String realoldpass = File.getLineNamed(File.SystemFile.GROUP, name)[1];
+        if (!realoldpass.equals("")) {
+            System.out.println("enter your old  password  :");
+            String oldpass;
+            oldpass = sc.nextLine();
+            if (!oldpass.equals(realoldpass)) {
+                System.err.println("the password does not match with the existing one");
+                Kernel.exit(-2);
+            }
         }
-        boolean existopw=checkLineExist(File.SystemFile.GROUP,data);//just to represente the fct that verify the existence of the line in the file to do !!!!!!
-        if(existopw){
-            String pw = "", pwc = "";
-            Scanner s = new Scanner(System.in);
-            System.out.println("enter the password  :");
-            pw = s.next();
-            System.out.println("confirm the password  :");
-            pwc = s.next();
-         if (!pw.equals(pwc)) System.out.println("please make sure you entered the same password");
-         else{
-          String[] newline = new String[4];
-        newline[0] = group;
-        newline[1] = pw;
-        newline[2] = String.valueOf(0);
-        newline[3] = String.valueOf(0);
-        
-        String[][] newData = File.inflateArray(data, newline);
-        File.writeSystemFile(File.SystemFile.SHADOW,newData);
+        String pw, pwc;
+        Scanner s = new Scanner(System.in);
+        System.out.println("enter your new password  :");
+        pw = s.next();
+        System.out.println("confirm your new password  :");
+        pwc = s.next();
+        if (!pw.equals(pwc)) {
+            System.out.println("the passwords do not match");
+            Kernel.exit(-3);
         }
-        }
-        else break;    
-    // exit with success if we read all the files without error*/
-    Kernel.exit(0) ;
-  }
+        int line = File.getLineNamedId(File.SystemFile.GROUP, name);
+        data[line][1] = pw;
+        File.writeSystemFile(File.SystemFile.GROUP, data);
+        Kernel.exit(0);
+    }
 
 }
 

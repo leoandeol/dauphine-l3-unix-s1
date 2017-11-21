@@ -105,7 +105,7 @@ public class mkdir {
 
             // add entry for ".."
             DirectoryEntry parent = new DirectoryEntry(
-                    parentStat.getIno(), "");
+                    parentStat.getIno(), "..");
             parent.write(directoryEntryBuffer, 0);
             status = Kernel.write(newDir,
                     directoryEntryBuffer, directoryEntryBuffer.length);

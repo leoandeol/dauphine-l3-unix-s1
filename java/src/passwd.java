@@ -45,19 +45,21 @@ public class passwd {
         }
         //ask user for his old password
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter your old  password  :");
-        String oldpass;
-        oldpass = sc.nextLine();
         String realoldpass = File.getLineNamed(File.SystemFile.SHADOW, name)[1];
-        if (!oldpass.equals(realoldpass)) {
-            System.err.println("the password does not match with the existing one");
-            Kernel.exit(-1);
+        if(!realoldpass.equals("")) {
+            System.out.println("enter your old  password  :");
+            String oldpass;
+            oldpass = sc.nextLine();
+            if (!oldpass.equals(realoldpass)) {
+                System.err.println("the password does not match with the existing one");
+                Kernel.exit(-2);
+            }
         }
         String pw, pwc;
         Scanner s = new Scanner(System.in);
-        System.out.println("enter your password  :");
+        System.out.println("enter your new password  :");
         pw = s.next();
-        System.out.println("confirm your password  :");
+        System.out.println("confirm your new password  :");
         pwc = s.next();
         if (!pw.equals(pwc)) {
             System.out.println("the passwords do not match");

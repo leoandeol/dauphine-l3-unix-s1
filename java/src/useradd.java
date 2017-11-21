@@ -61,11 +61,9 @@ public class useradd {
 
         // /etc/shadow entry
         String[][] shadowdata = File.readSystemFile(File.SystemFile.SHADOW);
-        String[] newshadowline = {name, "password", Date.from(Instant.now()).toString(),"0","99999"};
+        String[] newshadowline = {name, "", Date.from(Instant.now()).toString(),"0","99999"};
         String[][] newshadowdata = File.inflateArray(shadowdata, newshadowline);
         File.writeSystemFile(File.SystemFile.SHADOW, newshadowdata);
-
-        System.out.println("User \""+name+"\" created with default password as : \"password\"");
 
         // exit with success
         Kernel.exit(0);

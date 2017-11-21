@@ -271,7 +271,7 @@ public class mkfs {
         DirectoryEntry itself =
                 new DirectoryEntry(FileSystem.ROOT_INDEX_NODE_NUMBER, ".");
         DirectoryEntry parent =
-                new DirectoryEntry(FileSystem.ROOT_INDEX_NODE_NUMBER, "");
+                new DirectoryEntry(FileSystem.ROOT_INDEX_NODE_NUMBER, "..");
 
         // write the root directory entries to the root directory block
         itself.write(rootDirectoryBlock.bytes, 0);

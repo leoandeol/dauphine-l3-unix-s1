@@ -116,6 +116,15 @@ public class File {
         return false;
     }
 
+    public static boolean checkGroupExist(String group) throws Exception {
+        String[][] s = File.readSystemFile(SystemFile.GROUP);
+        for(String[] v : s){
+            if(v[0].equals(group))
+                return true;
+        }
+        return false;
+    }
+
     public static void createFolder(String path) throws Exception{
         Runtime.getRuntime().exec("java mkdir "+path).waitFor();
     }
