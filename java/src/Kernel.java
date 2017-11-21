@@ -3,6 +3,7 @@
  * 456789012345678901234567890123456789012345678901234567890123456789012
  */
 
+import java.io.FileOutputStream;
 import java.util.StringTokenizer;
 import java.util.Properties;
 import java.io.FileInputStream;
@@ -192,7 +193,7 @@ public class Kernel {
      *   extern int errno ;
      * </pre>
      *
-     * @see getErrno
+     * @see getErrno()
      */
     public static void setErrno(int newErrno) {
         if (process == null) {
@@ -1180,7 +1181,6 @@ to be done:
             System.err.println(PROGRAM_NAME + ": error reading properties file");
             System.exit(EXIT_FAILURE);
         }
-
         // get the root file system properties
         String rootFileSystemFilename =
                 properties.getProperty("filesystem.root.filename", "filesys.dat");
@@ -1566,6 +1566,20 @@ Some internal methods.
         fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
         Kernel.close(fd);
         return 0;
+    }
+
+    public static String umask(String umask) throws Exception {
+        String propertyFileName = "filesys.conf";
+        Properties properties = new Properties();
+        FileInputStream in = new FileInputStream(propertyFileName);
+        properties.load(in);
+        in.close();
+        String s = properties.getProperty("process.umask");
+        properties.setProperty("process.umask", umask);
+        FileOutputStream out = new FileOutputStream(propertyFileName);
+        properties.store(out,"Updated for umask="+umask);
+        out.close();
+        return s;
     }
 }
 

@@ -236,7 +236,7 @@ public class FileSystem
    * Loads the block containing the specified data block bit into
    * the free list block buffer.  This is a convenience method.
    * @param dataBlockNumber the data block number
-   * @exception java.io.IOException
+   * @exception java.io.IOException input output exception
    */
   private void loadFreeListBlock( int dataBlockNumber )
     throws IOException
@@ -315,7 +315,7 @@ public class FileSystem
    * Reads an index node at the index node location specified.
    * @param indexNode the index node
    * @param indexNodeNumber the location
-   * @execption java.io.IOException if any exception occurs in an 
+   * @exception java.io.IOException if any exception occurs in an
    * underlying operation on the "file system" file.
    */
   public void readIndexNode( IndexNode indexNode , short indexNodeNumber ) 
@@ -332,7 +332,7 @@ public class FileSystem
    * Writes an index node at the index node location specified.
    * @param indexNode the index node
    * @param indexNodeNumber the location
-   * @execption java.io.IOException if any exception occurs in an 
+   * @exception java.io.IOException if any exception occurs in an
    * underlying operation on the "file system" file.
    */
   public void writeIndexNode( IndexNode indexNode , short indexNodeNumber )
@@ -351,7 +351,7 @@ public class FileSystem
    * Loads the block containing the specified index node into
    * the index node block buffer.  This is a convenience method.
    * @param indexNodeNumber the index node number
-   * @exception java.io.IOException
+   * @exception java.io.IOException exception
    */
   private void loadIndexNodeBlock( short indexNodeNumber )
     throws IOException
