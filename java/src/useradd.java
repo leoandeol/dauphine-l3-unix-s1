@@ -42,14 +42,14 @@ public class useradd {
 
         // /etc/group entry
         String[][] groupdata = File.readSystemFile(File.SystemFile.GROUP);
-        String gid = String.valueOf(groupdata.length);
+        String gid = String.valueOf(File.countLines(File.SystemFile.GROUP));
         String[] newgroupline = {name,"",gid,name};
         String[][] newgroupdata = File.inflateArray(groupdata, newgroupline);
         File.writeSystemFile(File.SystemFile.GROUP, newgroupdata);
 
         // /etc/passwd entry
         String[][] passwddata = File.readSystemFile(File.SystemFile.PASSWD);
-        String uid = String.valueOf(passwddata.length);
+        String uid = String.valueOf(File.countLines(File.SystemFile.PASSWD));
         String home = (name.equals("root") ? "/root" : "/home/" + name);
 
         String[] newpasswdline = {name,"x",uid,gid,name,home,"/bin/bash"};

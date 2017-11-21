@@ -76,16 +76,11 @@ public class File {
 
     public static int countLines(SystemFile file) throws Exception {
         int fd= Kernel.open(file.toString(), Kernel.O_RDONLY);
-        byte[] ch = new byte[1];
-        int rd;
-        int count = 1;
-        do {
-            rd = Kernel.read(fd, ch, 1);
-            if (ch[0] == 0x0A)
-                count++;
-        } while (rd > 0);
+        if(countBytes(fd)==0) return 0;
         Kernel.close(fd);
-        return count;
+        String s = File.fileToString(file.toString());
+        String[] tmp = s.split("\n");
+        return tmp.length;
     }
 
     public static int countBytes(int fd) throws Exception {
