@@ -604,7 +604,7 @@ public class Kernel {
     public static void exit(int status)
             throws Exception {
         // close anything that might be open for the current process
-        for (int i = 0; i < process.openFiles.length; i++){
+        for (int i = 0; i < process.openFiles.length; i++) {
             if (process.openFiles[i] != null) {
                 close(i);
             }
@@ -1521,15 +1521,32 @@ Some internal methods.
     public static int chown(String path, String user)
             throws Exception {
         int fd = Kernel.open(path, Kernel.O_RDWR);
-        if(fd<0){
+        if (fd < 0) {
             System.err.println("This file doesn't exist");
             return -1;
         }
         FileSystem fileSystem = openFileSystems[ROOT_FILE_SYSTEM];
         FileDescriptor fileDescriptor = process.openFiles[fd];
         IndexNode ii = fileDescriptor.getIndexNode();
-        ii.setUid(Short.parseShort(File.getLineNamed(File.SystemFile.PASSWD, user)[2]));
-        //TODO not working:
+        short myuid = Short.parseShort(File.getLineNamed(File.SystemFile.PASSWD, user)[2]);
+        ii.setUid(myuid);
+        fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
+        Kernel.close(fd);
+        return 0;
+    }
+
+    public static int chgrp(String path, String group)
+            throws Exception {
+        int fd = Kernel.open(path, Kernel.O_RDWR);
+        if (fd < 0) {
+            System.err.println("This file doesn't exist");
+            return -1;
+        }
+        FileSystem fileSystem = openFileSystems[ROOT_FILE_SYSTEM];
+        FileDescriptor fileDescriptor = process.openFiles[fd];
+        IndexNode ii = fileDescriptor.getIndexNode();
+        short myuid = Short.parseShort(File.getLineNamed(File.SystemFile.GROUP, group)[2]);
+        ii.setGid(myuid);
         fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
         Kernel.close(fd);
         return 0;
@@ -1538,7 +1555,7 @@ Some internal methods.
     public static int chmod(String name, short mode)
             throws Exception {
         int fd = Kernel.open(name, Kernel.O_RDWR);
-        if(fd<0){
+        if (fd < 0) {
             System.err.println("This file doesn't exist");
             return -1;
         }
