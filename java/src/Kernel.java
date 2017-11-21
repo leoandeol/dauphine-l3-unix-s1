@@ -1529,6 +1529,7 @@ Some internal methods.
         FileDescriptor fileDescriptor = process.openFiles[fd];
         IndexNode ii = fileDescriptor.getIndexNode();
         ii.setUid(Short.parseShort(File.getLineNamed(File.SystemFile.PASSWD, user)[2]));
+        //TODO not working:
         fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
         Kernel.close(fd);
         return 0;

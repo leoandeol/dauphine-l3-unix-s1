@@ -51,8 +51,15 @@ public class lmod {
         i/=10;
         s+=(i%10==1)?"r":"-";
         s+=((stat.getMode()&Kernel.S_IFMT)==Kernel.S_IFDIR)?"d":"-";
-        System.out.println((new StringBuilder(s)).reverse().toString());
+        String rights = (new StringBuilder(s)).reverse().toString();
 
+        String[][] data = File.readSystemFile(File.SystemFile.PASSWD);
+        String name = data[stat.getUid()][0];
+        String[][] ndata = File.readSystemFile(File.SystemFile.GROUP);
+        String group = ndata[stat.getGid()][0];
+
+        String fina = rights+" "+name+" "+group;
+        System.out.println(fina);
 
         // exit with success
         Kernel.exit(0);
