@@ -64,8 +64,8 @@ public class passwd {
             Kernel.exit(-3);
         }
         int line = File.getLineNamedId(File.SystemFile.SHADOW, name);
-        data[line][1]=pw;
-        data[line][2]=Date.from(Instant.now()).toString();
+        data[line][1] = pw;
+        data[line][2] = Date.from(Instant.now()).toString();
         File.writeSystemFile(File.SystemFile.SHADOW, data);
         Kernel.exit(0);
     }
