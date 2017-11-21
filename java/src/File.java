@@ -153,4 +153,13 @@ public class File {
         }
         return -1;
     }
+
+    public static boolean fileExists(String path) throws Exception {
+        int fd = Kernel.open(path, Kernel.O_RDONLY);
+        if(fd<0){
+            return false;
+        }
+        Kernel.close(fd);
+        return true;
+    }
 }

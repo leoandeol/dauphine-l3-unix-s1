@@ -33,7 +33,6 @@ public class adduser {
         // give the command line argument a better name
         String name = argv[0];
         String group = argv[1];
-        //TODO User already in group ?
         if (!File.checkUserExist(name)) {
             System.err.println("this user doesn't exist");
             Kernel.exit(-1);

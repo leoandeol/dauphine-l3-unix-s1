@@ -1517,5 +1517,37 @@ Some internal methods.
         indexNode.copy(inode);
         return indexNodeNumber;
     }
+
+    public static int chown(String path, String user)
+            throws Exception {
+        int fd = Kernel.open(path, Kernel.O_RDWR);
+        if(fd<0){
+            System.err.println("This file doesn't exist");
+            return -1;
+        }
+        FileSystem fileSystem = openFileSystems[ROOT_FILE_SYSTEM];
+        FileDescriptor fileDescriptor = process.openFiles[fd];
+        IndexNode ii = fileDescriptor.getIndexNode();
+        ii.setUid(Short.parseShort(File.getLineNamed(File.SystemFile.PASSWD, user)[2]));
+        fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
+        Kernel.close(fd);
+        return 0;
+    }
+
+    public static int chmod(String name, short mode)
+            throws Exception {
+        int fd = Kernel.open(name, Kernel.O_RDWR);
+        if(fd<0){
+            System.err.println("This file doesn't exist");
+            return -1;
+        }
+        FileSystem fileSystem = openFileSystems[ROOT_FILE_SYSTEM];
+        FileDescriptor fileDescriptor = process.openFiles[fd];
+        IndexNode ii = fileDescriptor.getIndexNode();
+        ii.setMode(mode);
+        fileSystem.writeIndexNode(ii, fileDescriptor.getIndexNodeNumber());
+        Kernel.close(fd);
+        return 0;
+    }
 }
 
