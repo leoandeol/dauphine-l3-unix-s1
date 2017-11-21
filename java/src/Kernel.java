@@ -1581,5 +1581,20 @@ Some internal methods.
         out.close();
         return s;
     }
+
+    public static void switchUser(String name) throws Exception {
+        String propertyFileName = "filesys.conf";
+        Properties properties = new Properties();
+        FileInputStream in = new FileInputStream(propertyFileName);
+        properties.load(in);
+        in.close();
+        String[] user = File.getLineNamed(File.SystemFile.PASSWD, name);
+        properties.setProperty("process.uid", user[2]);
+        properties.setProperty("process.gid", user[3]);
+        properties.setProperty("process.dir", user[5]);
+        FileOutputStream out = new FileOutputStream(propertyFileName);
+        properties.store(out,"Updated for user="+name);
+        out.close();
+    }
 }
 
