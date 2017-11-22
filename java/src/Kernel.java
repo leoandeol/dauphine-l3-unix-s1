@@ -458,6 +458,8 @@ public class Kernel {
             // return (EACCES) if the file does not exist and the directory
             // in which it is to be created is not writable
 
+            currIndexNode.setUid(process.getUid());
+            currIndexNode.setGid(process.getGid());
             currIndexNode.setMode(mode);
             currIndexNode.setNlink((short) 1);
 
@@ -571,6 +573,8 @@ public class Kernel {
             }
 
             // update the inode to size 0
+            currIndexNode.setUid(process.getUid());
+            currIndexNode.setGid(process.getGid());
             currIndexNode.setSize(0);
 
             // write the inode to the file system.

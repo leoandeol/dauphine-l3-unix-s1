@@ -14,7 +14,8 @@ public class genproj {
             File.createFile(file);
         }
 
-        Runtime.getRuntime().exec("java useradd root");
+        Runtime.getRuntime().exec("java useradd root").waitFor();
+        Runtime.getRuntime().exec("java switchuser root").waitFor();
     }
 
 }
