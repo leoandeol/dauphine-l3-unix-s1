@@ -162,4 +162,15 @@ public class File {
         Kernel.close(fd);
         return true;
     }
+
+    public static boolean isUserInGroup(String user, String group) throws Exception {
+        String[] s = File.getLineNamed(SystemFile.GROUP, group);
+        String ss = s[3];
+        String[] tab = ss.split(",");
+        for(String t :  tab){
+            if(t.equals(user))
+                return true;
+        }
+        return false;
+    }
 }
