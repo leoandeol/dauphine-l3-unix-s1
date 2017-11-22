@@ -815,6 +815,30 @@ public class Kernel {
             return status;
 
         FileDescriptor file = process.openFiles[fd];
+
+
+        /*if(file.getIndexNode().getUid()!=process.getUid()&&
+        (file.getIndexNode().getGid()==process.getGid()||
+                File.isUserInGroup(process.getUid(), process.getGid()))&&
+                (file.getIndexNode().getMode()|Kernel.S_IRGRP)==0){
+            System.err.println("You are 'group' and don't have the permission to read in this file");
+            Kernel.exit(-2);
+        }
+
+        if(file.getIndexNode().getUid()!=process.getUid()&&
+                (file.getIndexNode().getGid()==process.getGid()||
+                File.isUserInGroup(process.getUid(), process.getGid()))&&
+                (file.getIndexNode().getMode()|Kernel.S_IRGRP)==0){
+            System.err.println("You are 'group' and don't have the permission to read in this file");
+            Kernel.exit(-1);
+        }
+
+        if(file.getIndexNode().getUid()!=process.getUid()&&
+                (file.getIndexNode().getMode()|Kernel.S_IRUSR)==0){
+            System.err.println("You are 'user' and don't have the permission to read in this file");
+            Kernel.exit(-1);
+        }*/
+
         int offset = file.getOffset();
         int size = file.getSize();
         int blockSize = file.getBlockSize();
@@ -1002,6 +1026,28 @@ public class Kernel {
 
         // return (ENOSPC) if the device containing the file system
         // referred to by fd has not room for the data
+
+        /*if(file.getIndexNode().getUid()!=process.getUid()&&
+        (file.getIndexNode().getGid()==process.getGid()||
+                File.isUserInGroup(process.getUid(), process.getGid()))&&
+                (file.getIndexNode().getMode()|Kernel.S_IWGRP)==0){
+            System.err.println("You are 'group' and don't have the permission to read in this file");
+            Kernel.exit(-2);
+        }
+
+        if(file.getIndexNode().getUid()!=process.getUid()&&
+                (file.getIndexNode().getGid()==process.getGid()||
+                File.isUserInGroup(process.getUid(), process.getGid()))&&
+                (file.getIndexNode().getMode()|Kernel.S_IWGRP)==0){
+            System.err.println("You are 'group' and don't have the permission to read in this file");
+            Kernel.exit(-1);
+        }
+
+        if(file.getIndexNode().getUid()!=process.getUid()&&
+                (file.getIndexNode().getMode()|Kernel.S_IWUSR)==0){
+            System.err.println("You are 'user' and don't have the permission to read in this file");
+            Kernel.exit(-1);
+        }*/
 
         int offset = file.getOffset();
         int size = file.getSize();

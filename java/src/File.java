@@ -173,4 +173,24 @@ public class File {
         }
         return false;
     }
+
+    public static boolean isUserInGroup(short uid, short gid) throws Exception {
+        String[][] passwd = File.readSystemFile(SystemFile.PASSWD);
+        String user = "";
+        for(int i = 0; i < passwd.length; i++){
+            if(passwd[i][2].equals(uid)){
+                user = passwd[i][0];
+                break;
+            }
+        }
+        String[][] groups = File.readSystemFile(SystemFile.GROUP);
+        String group = "";
+        for(int i = 0; i < groups.length; i++){
+            if(groups[i][2].equals(gid)){
+                group = groups[i][0];
+                break;
+            }
+        }
+        return isUserInGroup(user, group);
+    }
 }
